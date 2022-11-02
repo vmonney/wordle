@@ -1,18 +1,20 @@
 const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
+const loadingDiv = document.querySelector('.info-bar');
+const ANSWER_LENGTH = 5;  /* Capital case 'cause it doesn't change. it's a constant */
 
 let wordle
+let isLoading = true
 
-const getWordle = () => {
-  fetch('https://words.dev-apis.com/word-of-the-day') // to get a random word just add ?random=1 at the end of the url. / to choose another word, add ?puzzle=<number>
-  .then(response => response.json())
-  .then(json => {
-    console.log(json)
-    wordle = json.word.toUpperCase()
-  })
-  .catch(err => console.log(err))
-
+async function getWordle() {
+  const res = await fetch("https://words.dev-apis.com/word-of-the-day");
+  // add ?random=1 to change the word to a random word
+  // add ?puzzle=<number> to add a specific word
+  const resObj = await res.json();
+  wordle = resObj.word.toUpperCase();
+  isLoading = false
+  setLoading(false)
 }
 
 getWordle()
@@ -96,7 +98,13 @@ const handleClick = (letter) => {
 }
 
 document.addEventListener('keydown', (event) => {
+  if (isGameOver|| isLoading) {
+    // do nothing;
+    return;
+  }
+
   const letter = event.key.toUpperCase();
+
   if (letter === 'BACKSPACE') {
     deleteLetter()
     return
@@ -104,9 +112,16 @@ document.addEventListener('keydown', (event) => {
   if (letter === 'ENTER') {
     checkRow()
     return
+  } else if (isLetter(letter)) {
+    addLetter(letter)
+  } else {
+    // do nothing
   }
-  addLetter(letter)
 })
+
+function isLetter(letter) {
+  return /^[a-zA-Z]$/.test(letter);
+}
 
 const addLetter = (letter) => {
   if (currentTile < 5 && currentRow < 6) {
@@ -128,10 +143,12 @@ const deleteLetter = () => {
   }
 }
 
-const checkRow = () => {
+async function checkRow() {
   const guess = guessRows[currentRow].join('')
   if (currentTile > 4) {
-      fetch('https://words.dev-apis.com/validate-word', {
+    isLoading = true
+    setLoading(true)
+      await fetch('https://words.dev-apis.com/validate-word', {
         method: "POST",
         body: JSON.stringify({
           "word": guess
@@ -140,11 +157,16 @@ const checkRow = () => {
       .then(response => response.json())
       .then(data => {
         if(data.validWord === false) {
+          markInvalidWord();
           showMessage('This word is not in the list.')
           return
         } else {
           flipTile()
           if (wordle === guess) {
+            // win
+            // win
+            document.querySelectorAll('.brand').forEach(letter => {
+              letter.classList.add("winner")})
             showMessage('Magnificent!')
             isGameOver = true
             return
@@ -163,6 +185,8 @@ const checkRow = () => {
       })
       .catch(err => console.log(err))
     }
+    isLoading = false
+    setLoading(false)
   }
 
 const showMessage = (message) => {
@@ -207,3 +231,19 @@ const flipTile = () => {
     }, 450 + (index * 300));
   })
 }
+
+function setLoading(isLoading) {
+  loadingDiv.classList.toggle('hidden', !isLoading);
+}
+
+
+function markInvalidWord () {
+  data = document.querySelectorAll('[data]')
+  data.forEach(letter => {
+    letter.classList.remove("invalid");
+    setTimeout(function () {
+      letter.classList.add("invalid");
+     }, 10)
+    }
+  )
+};
