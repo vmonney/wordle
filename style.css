@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+  font-family: Outfit, Avenir, Helvetica, Arial, sans-serif;
+  color: #fff;
+}
+
+body {
+  background-color: #0E0E0F;
+}
+
+h1 {
+  margin-right: 10px;
+}
+
+.title {
+  width: 62px;
+  height: 62px;
+  border: 3px solid #2f2f2f;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+  font-size: 48px;
+}
+.game-container {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container {
+  width: 510px;
+  margin: 0 auto;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid 3px #3A3A3C;
+}
+
+.tile-container{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.tile-container div {
+  display: flex;  /*to make the tiles next to each other*/
+}
+
+.tile-container .tile {
+  width: 62px;
+  height: 62px;
+  border: 3px solid #2f2f2f;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+  font-size: 32px;
+}
+
+.tile.flip {
+  animation: 0.5s ease-in-out flipping;
+}
+
+@keyframes flipping {
+  0% {
+    transform: rotateX(0deg)
+  } 
+  50%  {
+    transform: rotateX(90deg)
+  }
+  100% {
+    transform: rotateX(0deg)
+  }
+}
+
+.key-container{
+  width: 510px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.key-container button {
+  width: 43px;
+  height: 60px;
+  border-radius: 6px;
+  border: none;
+  background-color: #636363;
+  margin: 10px 2px 2px 2px;
+  cursor: pointer;
+  border-bottom: 2px solid #4d4d4d;
+  font-size: 22px;
+  font-weight: 700;
+}
+.key-container button:hover {
+  background-color: #5a5a5a;
+}
+
+.key-container button:active {
+  background-color: #4d4d4d;
+}
+
+.key-container button:nth-child(21),
+.key-container button:nth-child(28) {
+  width: 90px;
+}
+
+.message-container {
+  height: 30px;
+}
+
+.message-container  p {
+  background-color: #ebebeb;
+  color: #121213;
+  padding:.5em 1em;
+  border-radius: .5em;
+  font-size: 18px;
+  font-weight: 700;
+  z-index: 2;
+  margin: 20 auto;
+}
+.incorrect{
+  border-color: #3a3a3c;
+  background: #3a3a3c;
+}
+
+.partial {
+  background: #cd8729 !important;
+  border-color: #9f6414 !important;
+}
+
+.correct {
+  background-color: #3eaa42 !important;
+  border-color: #157d19 !important;
+}
+
+
