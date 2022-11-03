@@ -10,3 +10,8 @@ Here, I recreated the well known word game Wordle. Here's how to play:
 - If the player guesses the right word, the player wins and the game is over.
 
 Good Luck !
+
+
+## To play
+
+
